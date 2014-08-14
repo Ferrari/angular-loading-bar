@@ -156,6 +156,7 @@ angular.module('cfp.loadingBar', [])
 
     this.includeSpinner = true;
     this.includeBar = true;
+    this.includeMask = true;
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
@@ -166,7 +167,8 @@ angular.module('cfp.loadingBar', [])
       var $parentSelector = this.parentSelector,
         loadingBarContainer = angular.element('<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>'),
         loadingBar = loadingBarContainer.find('div').eq(0),
-        spinner = angular.element(this.spinnerTemplate);
+        spinner = angular.element(this.spinnerTemplate),
+        mask = angular.element('<div id="loadingBar-mask"></div>');
 
       var incTimeout,
         completeTimeout,
@@ -175,6 +177,7 @@ angular.module('cfp.loadingBar', [])
 
       var includeSpinner = this.includeSpinner;
       var includeBar = this.includeBar;
+      var includeMask = this.includeMask;
       var startSize = this.startSize;
 
       /**
@@ -198,6 +201,10 @@ angular.module('cfp.loadingBar', [])
 
         if (includeSpinner) {
           $animate.enter(spinner, $parent);
+        }
+
+        if (includeMask) {
+          $animate.enter(mask, $parent);
         }
 
         _set(startSize);
@@ -277,6 +284,7 @@ angular.module('cfp.loadingBar', [])
             started = false;
           });
           $animate.leave(spinner);
+          $animate.leave(mask);
         }, 500);
       }
 
